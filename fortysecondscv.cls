@@ -48,6 +48,8 @@
 	nomarginpar,
 ]{geometry}
 
+\RequirePackage{setspace}
+
 % pre-define some colors the user can choose from
 \definecolor{cvblue}{HTML}{0E5484}
 \definecolor{cvgreen}{HTML}{007170}
@@ -155,6 +157,11 @@
 \setlength{\datecolwidth}{0.17\textwidth}
 \DeclareOptionX{datecolwidth}{\setlength{\datecolwidth}{#1}}
 
+\newlength\minspace
+\setlength{\minspace}{0.03\textwidth}
+\DeclareOptionX{minspace}{\setlength{\minspace}{#1}}
+
+
 % pass further options to base class and load it
 \DeclareOptionX*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptionsX\relax
@@ -223,7 +230,7 @@
 
 % provides \xrfill for horizontal rules
 \RequirePackage{xhfill}
-
+\RequirePackage{lastpage}
 % enable multiple optional arguments in macros
 \RequirePackage{xparse}
 
@@ -273,6 +280,10 @@
 \newcommand*{\cvsubsection}[1]{\subsection*{#1}}
 \titleformat{\subsection}%
 	{\color{subsectioncolor}\normalfont\large}{}{0pt}{}
+
+\newcommand*{\cvsubsectionc}[1]{\subsection*{#1}}
+	\titleformat{\subsection}%
+		{\color{subsectioncolor}\normalfont\normalsize}{}{0pt}{}
 
 % for compatibility with older versions
 \newcommand*{\profilesection}[1]{\subsubsection*{#1}}
@@ -477,7 +488,7 @@
 
 % uniform icon style for all skill icons, e.g. flags or fontawesome icons
 \newcommand{\cvicon}[1]{\makebox[1em]{\color{iconcolor} #1}}
-\newcommand{\flag}[1]{\includegraphics[align=c, width=1em]{#1}}
+\newcommand{\flag}[1]{\worldflag[width=1em]{#1}}
 
 % \pointskill[<indent>]{<icon>}{<description>}{<points>}[<maxpoints>] creates
 % | [indent] [icon]  description  \hfill  ● ● ● ○ ○ |
@@ -617,9 +628,62 @@
 	\end{tikzpicture}\par
 }
 
+\newcommand{\garante}{
+	\begin{spacing}{0.5}
+	{\tiny{\em{In compliance with art.13 GDPR 679/2016 and the Italian Legislative Decree no. 196/2003, I hereby authorise the recipient of this document to use and process my personal details for the purpose of recruiting and selecting staff.}\hfill}}
+	\end{spacing}
+}
+
+% \newcommand{\garante}{
+% 	\begin{spacing}{0.5}
+% 	{\tiny{\em{In compliance with art.13 GDPR 679/2016 and the Italian Legislative Decree no. 196/2003, I hereby authorise the recipient of this document to use and process my personal details for the purpose of recruiting and selecting staff.}\hfill \thepage/\pageref{LastPage} }}
+% 	\end{spacing}
+% }
+
+% \newcommand{\cvfooter}{
+% 	\vfill
+% 	\noindent\textcolor{maincolor!70}{\rule{\textwidth}{0.1pt}}\\
+% 	\garante
+% }
+
+% \newcommand{\cvsignature}{
+% 	\vfill
+% 	{\bfseries\color{maincolor!70}\today \hfill \cvname}\\
+% 	\noindent\textcolor{maincolor!70}{\rule{\textwidth}{0.1pt}}\\
+% 	\garante
+% }
+\newcommand{\thefooterruler}{
+	\noindent\textcolor{maincolor!70}{\raisebox{0.25\baselineskip}{\rule{0.45\textwidth}{0.1pt}}\hfill\thepage/\pageref{LastPage}\hfill\raisebox{0.25\baselineskip}{\rule{0.45\textwidth}{0.1pt}}}
+}
 \newcommand{\cvsignature}{
 	\vfill
-	{\large\bfseries\color{maincolor!70}\today \hfill \cvname}
+    \begin{minipage}[b]{\textwidth}
+        \raggedright
+        {\bfseries\color{maincolor!70}\today} \hfill 
+        {\bfseries\color{maincolor!70}\cvname} \\
+        \thefooterruler\\
+        \garante
+    \end{minipage}
+}
+
+% \newcommand{\cvsignature}{
+% 	\vfill
+%     \begin{minipage}[b]{\textwidth}
+%         \raggedright
+%         {\bfseries\color{maincolor!70}\today} \hfill 
+%         {\bfseries\color{maincolor!70}\cvname} \\
+%         \noindent\textcolor{maincolor!70}{\rule{\textwidth}{0.1pt}\}\\
+%         \garante
+%     \end{minipage}
+% }
+
+\newcommand{\cvfooter}{
+	\vfill
+    \begin{minipage}[b]{\textwidth}
+        \raggedright
+        \thefooterruler\\
+        \garante
+    \end{minipage}
 }
 
 
@@ -677,8 +741,10 @@
 % default: empty sidebar
 \newcommand{\frontsidebar}{}
 \newcommand{\backsidebar}{}
+\newcommand{\thirdsidebar}{}
 \newcommand{\addtofrontsidebar}[1]{\apptocmd{\frontsidebar}{#1}{}{}}
 \newcommand{\addtobacksidebar}[1]{\apptocmd{\backsidebar}{#1}{}{}}
+\newcommand{\addtothirdsidebar}[1]{\apptocmd{\thirdsidebar}{#1}{}{}}
 
 \newcommand{\makefrontsidebar}{%
 	\begin{sidebar}
@@ -714,13 +780,26 @@
 \newcommand{\makebacksidebar}{%
 	\begin{sidebar}
 		% begin with name instead of picture
-		\nameandjob
+		% \nameandjob
 
 		% make sure there is no space at top, but after cvjob
 		\setlength{\parskip}{1ex}
 
 		% user definitions
 		\backsidebar
+	\end{sidebar}
+}
+
+\newcommand{\makethirdsidebar}{%
+	\begin{sidebar}
+		% begin with name instead of picture
+		%\nameandjob
+
+		% make sure there is no space at top, but after cvjob
+		\setlength{\parskip}{1ex}
+
+		% user definitions
+		\thirdsidebar
 	\end{sidebar}
 }
 
@@ -733,7 +812,7 @@
 
 % cv list environment --> table, left aligned, width=textwidth
 % tabular starred version adds space to make table as wide as \textwidth here
-\newenvironment{cvtable}[1][1]{%
+\newenvironment{cvtable}[1][.6]{%
 	\renewcommand{\arraystretch}{#1}%
 	% remove additional spacing before and after longtables
 	\setlength{\LTpre}{0pt}
@@ -774,6 +853,22 @@
 			\hfill {\footnotesize#3} \\%
 			\textcolor{itemtextcolor}{#4}%\vspace{\parsep}%
 		\fi%
+	}\\
+}
+
+\newcommand{\cvitemprj}[5]{%
+	\parbox[t]{\minspace}{\raggedright #1} &%
+	\parbox[t]{0.98\textwidth-\minspace }{%
+		\if\relax\detokenize{#4}\relax%
+			\parbox[t]{\linewidth-1em}{\raggedright #2}%
+			\hfill %
+		\else%
+			\parbox[t]{\linewidth-1em}{\raggedright \textbf{#2}}%
+			\hfill\\%
+			\textcolor{itemtextcolor}{#4}%\vspace{\parsep}%
+		\fi%
+		\\
+		\ \small \ \faTools \ {#5}
 	}\\
 }
 
