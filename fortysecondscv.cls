@@ -312,6 +312,7 @@
 % mandatory personal information
 \newcommand*{\cvname}[1]{\renewcommand{\cvname}{#1}}
 \newcommand*{\cvjobtitle}[1]{\renewcommand{\cvjobtitle}{#1}}
+\newcommand*{\cvdisclaimer}[1]{\renewcommand{\cvdisclaimer}{#1}}
 
 % profile picture (optional)
 \newcommand{\plotprofilepicture}{}
@@ -523,6 +524,22 @@
 	\hfill \par%
 }
 
+\newcommand{\skillruler}[3][0em]{
+    \begin{minipage}{\sidebartextwidth-1pt}
+		
+        \rotatebox[origin=r]{90}{\cvicon{#2}}
+        \textcolor{iconcolor}{\hfill\vrule\hspace{0.03em}}
+        % \begin{tikzpicture}
+		% 	fill=iconcolor,%
+        %     \fill [bottom color=iconcolor, top color=iconcolor!70] (0cm, 0cm) rectangle (-0.05cm, 2.5cm);
+        % \end{tikzpicture}
+		\parbox{\linewidth-#1-2.5em}{\sidetext{#3}}
+		
+    \end{minipage}
+	\hfill \par%
+}
+
+
 % label for wheel charts
 \newcommand{\chartlabel}[2][skillbg]{%
 	\begin{tikzpicture}
@@ -628,30 +645,12 @@
 	\end{tikzpicture}\par
 }
 
-\newcommand{\garante}{
+\newcommand{\cvdisclaimerline}{
 	\begin{spacing}{0.5}
-	{\tiny{\em{In compliance with art.13 GDPR 679/2016 and the Italian Legislative Decree no. 196/2003, I hereby authorise the recipient of this document to use and process my personal details for the purpose of recruiting and selecting staff.}\hfill}}
-	\end{spacing}
+		\tiny{\em{\textcolor{maincolor!70}{\cvdisclaimer}}}\hfill
+\end{spacing}%
 }
 
-% \newcommand{\garante}{
-% 	\begin{spacing}{0.5}
-% 	{\tiny{\em{In compliance with art.13 GDPR 679/2016 and the Italian Legislative Decree no. 196/2003, I hereby authorise the recipient of this document to use and process my personal details for the purpose of recruiting and selecting staff.}\hfill \thepage/\pageref{LastPage} }}
-% 	\end{spacing}
-% }
-
-% \newcommand{\cvfooter}{
-% 	\vfill
-% 	\noindent\textcolor{maincolor!70}{\rule{\textwidth}{0.1pt}}\\
-% 	\garante
-% }
-
-% \newcommand{\cvsignature}{
-% 	\vfill
-% 	{\bfseries\color{maincolor!70}\today \hfill \cvname}\\
-% 	\noindent\textcolor{maincolor!70}{\rule{\textwidth}{0.1pt}}\\
-% 	\garante
-% }
 \newcommand{\thefooterruler}{
 	\noindent\textcolor{maincolor!70}{\raisebox{0.25\baselineskip}{\rule{0.45\textwidth}{0.1pt}}\hfill\thepage/\pageref{LastPage}\hfill\raisebox{0.25\baselineskip}{\rule{0.45\textwidth}{0.1pt}}}
 }
@@ -659,31 +658,22 @@
 	\vfill
     \begin{minipage}[b]{\textwidth}
         \raggedright
-        {\bfseries\color{maincolor!70}\today} \hfill 
-        {\bfseries\color{maincolor!70}\cvname} \\
+        \color{maincolor!70}\today\hfill 
+        \color{maincolor!70}\cvname\\
         \thefooterruler\\
-        \garante
-    \end{minipage}
+        \cvdisclaimerline%
+    \end{minipage}%
 }
 
-% \newcommand{\cvsignature}{
-% 	\vfill
-%     \begin{minipage}[b]{\textwidth}
-%         \raggedright
-%         {\bfseries\color{maincolor!70}\today} \hfill 
-%         {\bfseries\color{maincolor!70}\cvname} \\
-%         \noindent\textcolor{maincolor!70}{\rule{\textwidth}{0.1pt}\}\\
-%         \garante
-%     \end{minipage}
-% }
 
 \newcommand{\cvfooter}{
 	\vfill
     \begin{minipage}[b]{\textwidth}
         \raggedright
+		\hfill\\
         \thefooterruler\\
-        \garante
-    \end{minipage}
+        \cvdisclaimerline%
+    \end{minipage}%
 }
 
 
@@ -900,6 +890,10 @@
 	\parbox[t]{0.98\textwidth-\datecolwidth}{%
 		\textbf{#1} \par \textit{#2} \par #3 \vspace{\parsep}%
 	}\\
+}
+
+\newcommand{\verticalruler}{
+    \noindent\hfill\smash{\rule[-0.95\textheight]{1pt}{0.95\textheight}}\hfill\null
 }
 
 % EOF - fortysecondscv.cls
