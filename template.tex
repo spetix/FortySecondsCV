@@ -56,6 +56,8 @@
 % improve word spacing and hyphenation
 \usepackage{microtype}
 \usepackage{ragged2e}
+\usepackage{lastpage}
+\usepackage{worldflags}
 
 % uncomment in case you don't want any hyphenation
 % \usepackage[none]{hyphenat}
@@ -115,6 +117,7 @@
 \cvname{Panda Bear}
 % job title/career
 \cvjobtitle{Panda Scientist,\\[0.2em] Panda of the Year}
+\cvdisclaimer{In compliance with art.13 GDPR 679/2016 and the Italian Legislative Decree no. 196/2003, I hereby authorise the recipient of this document to use and process my personal details for the purpose of recruiting and selecting staff.}
 
 %% optional information
 % profile picture
@@ -310,7 +313,7 @@
 	\cvitemshort{Education}{Teaching young pandas to be more panda-like}
 \end{cvtable}
 
-
+\cvfooter
 \newpage
 \makebacksidebar
 % \newgeometry{
@@ -368,8 +371,8 @@
 	\cvpubitem{Publication title}{Authors}{Journal}{Year}
 	\cvpubitem{Publication title that is spanning over multiple lines and still
 		does not look too bad}{Authors}{Journal}{Year}
-\end{cvtable}
+\end{cvtable}%
 
-\cvsignature
+\cvsignature%
 
-\end{document}
+\end{document}%

@@ -10,3 +10,6 @@ tmp/*
 *out
 test*
 README.html
+
+cv-*.tex
+template.xdv
